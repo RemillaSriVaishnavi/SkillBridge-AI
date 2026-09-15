@@ -18,3 +18,7 @@ An AI-powered screening engine that analyzes candidate resumes against job descr
 - **Parsing:** `pdfplumber`, `python-docx`
 
 ## 🚀 Quick Start Guide
+
+# 🎯 SkillBridge AI
+
+[![Telegram Bot](https://img.shields.io/badge/Telegram-Chat%20With%20Bot-blue?logo=telegram)](https://t.me/<YOUR_BOT_USERNAME>?start=hello)
