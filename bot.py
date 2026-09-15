@@ -4,6 +4,10 @@ import html
 import logging
 import warnings
 import asyncio
+
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
 from google.genai.errors import APIError
 from dotenv import load_dotenv
 from telegram import Update
@@ -259,7 +263,23 @@ async def evaluate_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+
+# Dummy HTTP server to satisfy Render's free Web Service health checks
+class RenderHealthCheck(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"SkillBridge Telegram Bot is Online!")
+
+def start_health_server():
+    port = int(os.environ.get("PORT", 8080))
+    server = HTTPServer(("0.0.0.0", port), RenderHealthCheck)
+    server.serve_forever()
+
 def main():
+    # Start the dummy web server in a background thread
+    threading.Thread(target=start_health_server, daemon=True).start()
+
     app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start_command))
@@ -270,7 +290,6 @@ def main():
 
     print("🤖 SkillBridge Mobile Telegram Bot is running...")
     app.run_polling()
-
 
 if __name__ == "__main__":
     main()
