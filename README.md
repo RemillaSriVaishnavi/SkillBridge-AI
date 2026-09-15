@@ -18,4 +18,3 @@ An AI-powered screening engine that analyzes candidate resumes against job descr
 - **Parsing:** `pdfplumber`, `python-docx`
 
 ## 🚀 Quick Start Guide
-
